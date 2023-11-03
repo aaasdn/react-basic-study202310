@@ -10,6 +10,7 @@ const Chart = ({ dataPoints }) => {
   //1년치 총액
   //a: 리턴결과에 대한 누적값, b: 배열에서 하나씩 꺼낸 값
   const totalValue = dataPointValues.reduce((a, b) => a + b, 0); //0: 초기값
+  // 초기값을 적지 않고 코드화 하면 배열의 0번째가 아닌 1번째부터 돌아간다.
 
 
   // 그 중에서 제일 지출이 높은 값
