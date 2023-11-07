@@ -1,75 +1,49 @@
-import React, { useState } from 'react';
-import './App.css';
-import CourseInput from './components/CourseGoals/CourseInput';
-import CourseList from './components/CourseGoals/CourseList';
-
-const DUMMY_DATA = [
-  {
-    id: 'g1',
-    text: '리액트 컴포넌트 스타일링 마스터하기',
-  },
-  {
-    id: 'g2',
-    text: 'UI 프로그래밍 삽고수 되기',
-  },
-];
+import React, { useEffect, useState } from 'react';
+import MainHeader from './components/SideEffect/MainHeader/MainHeader';
+import Home from './components/SideEffect/Home/Home';
+import Login from './components/SideEffect/Login/Login';
 
 const App = () => {
-  const [goals, setGoals] = useState(DUMMY_DATA);
+  // 로그인 상태를 관리하는 변수
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Input에게 전달할 함수
-  const addGoalHandler = (text) => {
-    // console.log('전달받은 텍스트:', text);
-    const newGoal = {
-      id: Math.random().toString(),
-      text: text,
-    };
+  // 화면이 리렌더링 될 때 localStorage를 확인해서
+  // 현재 login-flag가 존재하는지 검사.
+  console.log('로그인 검사 수행');
 
-    //상태변수(배열) 수정
-    // setGoals([...goals, newGoal]);
-    setGoals((prevGoals) => [...prevGoals, newGoal]);
+  // 기존에 로그인 한 사람인지 확인하는 코드는
+  // 리렌더링 될 때마다 실행되면 안됨!
+  useEffect(() => {
+    console.log('useEffect 실행! - 최초 단 한번만 실행됨!');
+    const storedLoginFlag = localStorage.getItem('login-flag');
+    if (storedLoginFlag === '1') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // 서버로 로그인을 요청하는 함수 (나중에는 fetch를 통한 백엔드와의 연계가 필요.)
+  const loginHandler = (email, password) => {
+    // 로그인을 했다는 증거로 상태값 변경 및 브라우저에 로그인 값을 1로 표현해서 저장.
+    localStorage.setItem('login-flag', '1');
+    setIsLoggedIn(true);
   };
 
-  // 삭제 이벤트 핸들러를 CourseItem까지 내려보내야 됨.
-  const deleteGoalHandler = (id) => {
-    // console.log('전달된 id: ', id);
-    // const updateGoals = [...goals]; //상태 배열 그대로 복사해서 가져옴.
-    // const index = updateGoals.findIndex((goal) => goal.id === id);
-    // updateGoals.splice(index, 1);
-    // splice 삭제기능, 괄호안에 매개값을 뒤에 하나 더주면 객체요소 추가 기능도 있음.
-    const updateGoals = goals.filter((goal) => goal.id !== id);
-    // 위의 긴 코드를 한줄로 간소화
-    setGoals(updateGoals);
+  const logoutHandler = () => {
+    localStorage.removeItem('login-flag');
+    setIsLoggedIn(false);
   };
-
-  // CourseList 조건부 렌더링
-  let listContent = (
-    <p
-      style={{
-        color: 'red',
-        fontSize: '2em',
-        textAlign: 'center',
-      }}
-    >
-      목표를 등록해 주세요!!
-    </p>
-  );
-  if (goals.length > 0) {
-    listContent = (
-      <CourseList
-        items={goals}
-        onDelete={deleteGoalHandler}
-      />
-    );
-  }
 
   return (
-    <div>
-      <section id='goal-form'>
-        <CourseInput onAdd={addGoalHandler} />
-      </section>
-      <section id='goals'>{listContent}</section>
-    </div>
+    <>
+      <MainHeader
+        isAuthenticated={isLoggedIn}
+        onLogout={logoutHandler}
+      />
+      <main>
+        {isLoggedIn && <Home />}
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+      </main>
+    </>
   );
 };
 

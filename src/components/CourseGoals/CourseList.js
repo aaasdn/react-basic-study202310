@@ -12,7 +12,7 @@ const CourseUl = styled.ul`
 
 const CourseList = ({ items, onDelete }) => {
   return (
-    <ul className='goal-list'>
+    <CourseUl>
       {items.map((item) => {
         return (
           <CourseItem
@@ -22,7 +22,7 @@ const CourseList = ({ items, onDelete }) => {
           />
         );
       })}
-    </ul>
+    </CourseUl>
   );
 };
 
