@@ -1,8 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 
 import Card from '../../UI/Card';
 import styles from './Login.module.css';
 import Button from '../../UI/Button/Button';
+import AuthContext from '../../../store/auth-context';
+import Input from '../../UI/Input/Input';
 
 // 리듀서 함수
 /*
@@ -38,21 +40,23 @@ const emailReducer = (state, action) => {
   // };
 };
 
-  const passwordReducer = (state, action) => {
-    if (action.type === 'USER_INPUT') {
-      return {
-        value: action.val,
-        isValid: action.val.trim().length > 6,
-      };
-    } else if (action.type === 'INPUT_VALIDATE') {
-      return {
-        value: state.value,
-        isValid: state.value.trim().length > 6,
-      };
+const passwordReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.val,
+      isValid: action.val.trim().length > 6,
+    };
+  } else if (action.type === 'INPUT_VALIDATE') {
+    return {
+      value: state.value,
+      isValid: state.value.trim().length > 6,
+    };
   }
 };
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const { onLogin } = useContext(AuthContext);
+
   // email reducer 사용하기
   /*
     param1 - reducer function: 위에서 만든 리듀서 함수
@@ -66,7 +70,6 @@ const Login = ({ onLogin }) => {
   });
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    // 상태가 변화하면 passwordState로 들어옴
     value: '',
     isValid: null,
   });
@@ -75,7 +78,7 @@ const Login = ({ onLogin }) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   // emailState는 객체 형태. -> isValid 프로퍼티가 변경됐을 때만 useEffect를 실행하게 하려면
-  // isValid를 디스트럭쳐링 한다. (프로퍼티로 바로 사용 x) (디스트럭팅쳐리를 한다는것은 중괄호를 열어서 쪼개서 선언)
+  // isValid를 디스트럭쳐링 한다. (프로퍼티로 바로 사용 x)
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
@@ -129,40 +132,29 @@ const Login = ({ onLogin }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     onLogin(emailState.value, passwordState.value);
-     //자식이 부모에게 데이터 보낼때 쓰는것 onLogin
   };
 
   return (
     <Card className={styles.login}>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${styles.control} ${
-            !emailState.isValid ? styles.invalid : ''
-          }`}
-        >
-          <label htmlFor='email'>E-Mail</label>
-          <input
-            type='email'
-            id='email'
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-          />
-        </div>
-        <div
-          className={`${styles.control} ${
-            passwordIsValid === false ? styles.invalid : ''
-          }`}
-        >
-          <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            id='password'
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-          />
-        </div>
+        <Input
+          type='email'
+          id='email'
+          label='E-Mail'
+          value={emailState.value}
+          isValid={emailIsValid}
+          onChange={emailChangeHandler}
+          onBlur={validateEmailHandler}
+        />
+        <Input
+          type='password'
+          id='password'
+          label='Password'
+          value={passwordState.value}
+          isValid={passwordIsValid}
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler}
+        />
         <div className={styles.actions}>
           <Button
             type='submit'
