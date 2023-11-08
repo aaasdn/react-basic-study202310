@@ -84,7 +84,7 @@ const Login = ({ onLogin }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log('useEffect called in Login.js!');
-      setFormIsValid(emailIsValid && enteredPassword.trim().length > 6);
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 1000);
 
     // cleanup 함수 - 컴포넌트가 업데이트 되거나 없어지기 전에 실행
