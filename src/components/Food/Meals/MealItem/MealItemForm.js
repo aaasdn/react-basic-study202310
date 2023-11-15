@@ -4,7 +4,7 @@ import styles from './MealItemForm.module.scss';
 
 const MealItemForm = ({ id, onAddToCart }) => {
   // 수량의 상태를 관리하는 변수.
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
 
   // 담기 버튼을 누르면 발동하는 함수.
   const formSubmitHandler = (e) => {
@@ -12,7 +12,7 @@ const MealItemForm = ({ id, onAddToCart }) => {
     onAddToCart(amount); // context에게 확정된 수량을 전달해 주자.
   };
 
-  // 수량이 변결될 때마다 발동하는 함수.
+  // 수량이 변경될 때마다 발동하는 함수.
   const amountHandler = (amt) => {
     // console.log(`선택된 수량: ${amt}`);
     setAmount(amt);

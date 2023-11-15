@@ -1,5 +1,5 @@
 import React from 'react';
-import './CourseList.css';
+// import './CourseList.css';
 import CourseItem from './CourseItem';
 
 import styled from 'styled-components';

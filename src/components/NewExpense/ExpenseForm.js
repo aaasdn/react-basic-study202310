@@ -36,7 +36,7 @@ const ExpenseForm = ({ onSaveExpense, onToggle }) => {
 
     const newExpense = {
       title: userInput.title,
-      price: userInput.price,
+      price: +userInput.price,
       date: new Date(userInput.date),
     };
 
@@ -53,7 +53,7 @@ const ExpenseForm = ({ onSaveExpense, onToggle }) => {
   };
 
   const cancelInsertHandler = () => {
-    console.log('취소 버튼 누름!');
+    // console.log('취소 버튼 누름!');
     onToggle();
   };
 

@@ -7,7 +7,7 @@ const CourseItem = ({ item, onDelete }) => {
       className='goal-item'
       onClick={() => onDelete(item.id)}
     >
-    {item.text}
+      {item.text}
     </li>
   );
 };

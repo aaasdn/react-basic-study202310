@@ -1,8 +1,16 @@
-.goal-item {
-    margin: 1rem 0;
-    background: #8b005d;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    color: white;
-    padding: 1rem 2rem;
-    cursor: pointer;
-  }
+.users {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 40rem;
+}
+
+.users ul {
+  list-style: none;
+  padding: 1rem;
+}
+
+.users li {
+  border: 1px solid #ccc;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
